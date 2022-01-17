@@ -1,0 +1,64 @@
+import "./Navbar.css";
+import React from 'react'
+import { Link } from 'react-router-dom';
+import { Button } from './Button';
+
+function Navbar() {
+    /* menu responsive */
+    const [click, setClick] = React.useState(false);
+    /* button hero */
+    const [button, setButton] = React.useState(true);
+
+    /* responsive hamburger bar */
+    const handleClick = () => setClick(!click);
+    const closeMobileMenu = () => setClick(false);
+
+    /* responsive button hero */
+    const showButton = () => {
+        if (window.innerWidth <= 960) {
+            setButton(false);
+        } else {
+            setButton(true);
+        }
+    }
+
+    /* para que el nav responsive
+    se renderice una sola vez */
+    React.useEffect(() => {
+        showButton();
+    }, []);
+
+    window.addEventListener("resize", showButton);
+
+    return (
+    <>
+        <nav className="navbar">
+            <div className="navbar-container">
+                <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>VYNIL
+                <i className="fab fa-angellist"></i>
+                </Link> 
+                <div className="menu-icon" onClick={handleClick}>
+                <i className={click ? 'fas fa-times' :  'fas fa-bars'}></i>
+                </div>
+                <ul className={click ? "nav-menu active" : "nav-menu"}>
+                    <li className="nav-item">
+                        <Link to="/" className="nav-links" onClick={closeMobileMenu}>Home</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="/services" className="nav-links" onClick={closeMobileMenu}>Services</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="/products" className="nav-links" onClick={closeMobileMenu}>Products</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="/signup" className="nav-links-mobile" onClick={closeMobileMenu}>Sign up</Link>
+                    </li>
+                </ul>
+                {button && <Button buttonStyle="btn--outline">SIGN UP</Button>}
+            </div>
+        </nav>
+    </>
+    )
+}
+
+export default Navbar
